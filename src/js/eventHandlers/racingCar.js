@@ -1,4 +1,7 @@
-import racingCarModel from '../model/RacingCarModel.js';
+
+import racingCarGameModel from '../model/RacingCarGameModel.js';
+import { RacingCarModel } from '../model/RacingCarModel.js';
+
 import {
   disableCarAttemptsCountForm,
   disableCarNameForm,
@@ -15,9 +18,16 @@ export const handleCarNameSubmit = (e) => {
   e.preventDefault();
 
   try {
-    racingCarModel.name = getCarName();
+    const carNames = getCarName()
+      .split(',')
+      .map((elem) => elem.trim());
+    validateCarName(carNames);
 
-    validateCarName(racingCarModel.name);
+    carNames.forEach((carName) => {
+      racingCarGameModel.cars.push(new RacingCarModel(carName));
+      racingCarGameModel.record[carName] = 0;
+    });
+
 
     disableCarNameForm();
     showCarAttemptsCountForm();
@@ -30,14 +40,22 @@ export const handleCarAttemptsCountSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    racingCarModel.attemptsCount = getCarAttemptsCount();
-    validateCarAttemptsCount(racingCarModel.attemptsCount);
+
+    const attemptsCount = getCarAttemptsCount();
+    validateCarAttemptsCount(attemptsCount);
+    racingCarGameModel.attemptsCount = attemptsCount;
 
     disableCarAttemptsCountForm();
-    renderCarRoad(racingCarModel.name);
+    renderCarRoad(racingCarGameModel.cars);
+
     await gameStart();
-    racingCarModel.winners = getWinners(racingCarModel.name, racingCarModel.record);
-    renderWinners(racingCarModel.winners);
+    window.record = racingCarGameModel.record;
+
+    racingCarGameModel.winners = getWinners(racingCarGameModel.record);
+    window.winners = racingCarGameModel.winners;
+
+    renderWinners(racingCarGameModel.winners);
+
   } catch (error) {
     alert(error.message);
   }
