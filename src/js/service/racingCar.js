@@ -1,3 +1,4 @@
+
 import racingCarGameModel from '../model/RacingCarGameModel.js';
 import { RACING_CAR } from '../constants/racingCar.js';
 import { generateRandomNumber } from '../utils/index.js';

@@ -1,5 +1,7 @@
+
 import racingCarGameModel from '../model/RacingCarGameModel.js';
 import { RacingCarModel } from '../model/RacingCarModel.js';
+
 import {
   disableCarAttemptsCountForm,
   disableCarNameForm,
@@ -26,6 +28,7 @@ export const handleCarNameSubmit = (e) => {
       racingCarGameModel.record[carName] = 0;
     });
 
+
     disableCarNameForm();
     showCarAttemptsCountForm();
   } catch (error) {
@@ -37,6 +40,7 @@ export const handleCarAttemptsCountSubmit = async (e) => {
   e.preventDefault();
 
   try {
+
     const attemptsCount = getCarAttemptsCount();
     validateCarAttemptsCount(attemptsCount);
     racingCarGameModel.attemptsCount = attemptsCount;
@@ -51,6 +55,7 @@ export const handleCarAttemptsCountSubmit = async (e) => {
     window.winners = racingCarGameModel.winners;
 
     renderWinners(racingCarGameModel.winners);
+
   } catch (error) {
     alert(error.message);
   }
